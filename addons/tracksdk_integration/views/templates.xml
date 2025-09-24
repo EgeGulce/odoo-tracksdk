@@ -7,7 +7,7 @@
             if (typeof TrackSdk !== 'undefined') {
                 TrackSdk.init({
                     tenantId: 'odoo-test',
-                    endpoint: 'https://your-tracksdk-service.com/api/v1/collect',
+                    endpoint: 'https://hypalgesic-ella-pseudoambidextrously.ngrok-free.dev/api/v1/collect',
                     mode: 'auto',
                     consent: { analytics: true, ads: false },
                     capture: { clicks: true, forms: true, pageviews: true },
