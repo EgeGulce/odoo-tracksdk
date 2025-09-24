@@ -1,0 +1,57 @@
+services:
+  # Odoo Web Service
+  - type: web
+    name: odoo-web
+    env: docker
+    dockerfilePath: ./Dockerfile.odoo
+    plan: starter
+    region: frankfurt
+    healthCheckPath: /web/health
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 8069
+      - key: DEBUG
+        value: false
+      - key: LOG_LEVEL
+        value: INFO
+      - key: STORAGE_BACKEND
+        value: filesystem
+      - key: STORAGE_PATH
+        value: /var/lib/odoo
+      - key: DB_HOST
+        fromDatabase:
+          name: odoo-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: odoo-db
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: odoo-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: odoo-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: odoo-db
+          property: database
+
+  # PostgreSQL Database
+  - type: pserv
+    name: odoo-db
+    env: docker
+    plan: starter
+    region: frankfurt
+    dockerfilePath: ./Dockerfile.postgres
+    envVars:
+      - key: POSTGRES_DB
+        value: odoo
+      - key: POSTGRES_USER
+        value: odoo
+      - key: POSTGRES_PASSWORD
+        generateValue: true

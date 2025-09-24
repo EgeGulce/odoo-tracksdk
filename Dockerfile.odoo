@@ -1,0 +1,24 @@
+FROM odoo:16.0
+
+# Install additional dependencies
+RUN apt-get update && apt-get install -y \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy custom addons
+COPY addons/ /mnt/extra-addons/
+
+# Copy configuration
+COPY config/ /etc/odoo/
+
+# Create data directory
+RUN mkdir -p /var/lib/odoo
+
+# Expose port
+EXPOSE 8069
+
+# Set working directory
+WORKDIR /opt/odoo
+
+# Start Odoo
+CMD ["odoo", "-c", "/etc/odoo/odoo.conf"]
