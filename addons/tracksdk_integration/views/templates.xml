@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="tracksdk_integration" inherit_id="web.assets_common">
+        <script type="text/javascript" src="/tracksdk/dist/index.global.js"></script>
+        <script type="text/javascript">
+            // Initialize TrackSdk
+            if (typeof TrackSdk !== 'undefined') {
+                TrackSdk.init({
+                    tenantId: 'odoo-test',
+                    endpoint: 'https://your-tracksdk-service.com/api/v1/collect',
+                    mode: 'auto',
+                    consent: { analytics: true, ads: false },
+                    capture: { clicks: true, forms: true, pageviews: true },
+                    maxBatch: 10,
+                    flushIntervalMs: 5000
+                });
+                
+                // Identify user when logged in
+                if (odoo.session && odoo.session.uid) {
+                    TrackSdk.identify({
+                        userId: odoo.session.uid.toString(),
+                        role: odoo.session.user_context.get('user_type', 'user'),
+                        plan: 'odoo-test'
+                    });
+                }
+            }
+        </script>
+    </template>
+</odoo>
